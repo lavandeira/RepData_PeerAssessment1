@@ -1,0 +1,304 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Untitled Document.md</title><style></style></head><body id="preview">
+<h2><a id="Loading_and_processing_the_data_0"></a>Loading and processing the data</h2>
+<blockquote>
+<p>Show any code that is needed to</p>
+</blockquote>
+<ol>
+<li>Load the data (i.e. read.csv())</li>
+<li>Process/transform the data (if necessary) into a format suitable for your analysis</li>
+</ol>
+<h1><a id="First_we_need_to_load_or_install_the_packages_needed_to_load_and_process_the_data_5"></a>First we need to load (or install) the packages needed to load and process the data</h1>
+<pre><code class="language-r"><span class="hljs-keyword">library</span>(knitr)
+opts_chunk$set(echo = <span class="hljs-literal">TRUE</span>)
+
+<span class="hljs-keyword">library</span>(dplyr)
+<span class="hljs-keyword">library</span>(lubridate)
+<span class="hljs-keyword">library</span>(ggplot2)
+</code></pre>
+<h1><a id="Then_we_can_read_the_data_17"></a>Then we can read the data</h1>
+<pre><code class="language-r">data &lt;- read.csv(<span class="hljs-string">"activity.csv"</span>, header = <span class="hljs-literal">TRUE</span>, sep = <span class="hljs-string">','</span>, colClasses = c(<span class="hljs-string">"numeric"</span>,   <span class="hljs-string">"character"</span>, <span class="hljs-string">"integer"</span>))
+</code></pre>
+<p>It should show this dataset when printed:</p>
+<pre><code><span class="hljs-preprocessor">##    steps       date interval</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">1</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>        <span class="hljs-number">0</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">2</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>        <span class="hljs-number">5</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">3</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">10</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">4</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">15</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">5</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">20</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">6</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">25</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">7</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">30</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">8</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">35</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">9</span>     NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">40</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">10</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">45</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">11</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">50</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">12</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">55</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">13</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">100</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">14</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">105</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">15</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">110</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">16</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">115</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">17</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">120</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">18</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">125</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">19</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">130</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">20</span>    NA <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>      <span class="hljs-number">135</span></span>
+</code></pre>
+<h1><a id="Then_we_need_to_tidy_the_data_51"></a>Then we need to tidy the data</h1>
+<p>First we set the data format to ymd using lubridate</p>
+<pre><code class="language-r">data$date &lt;- ymd(data$date)
+</code></pre>
+<p>Check the data structure with str() and watch a few rows with head()</p>
+<pre><code class="language-r">str(data)
+
+<span class="hljs-comment">## 'data.frame':    17568 obs. of  3 variables:</span>
+<span class="hljs-comment">##  $ steps   : num  NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="hljs-comment">##  $ date    : POSIXct, format: "2012-10-01" "2012-10-01" ...</span>
+<span class="hljs-comment">##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...</span>
+
+head(data)
+
+<span class="hljs-comment">##   steps       date interval</span>
+<span class="hljs-comment">## 1    NA 2012-10-01        0</span>
+<span class="hljs-comment">## 2    NA 2012-10-01        5</span>
+<span class="hljs-comment">## 3    NA 2012-10-01       10</span>
+<span class="hljs-comment">## 4    NA 2012-10-01       15</span>
+<span class="hljs-comment">## 5    NA 2012-10-01       20</span>
+<span class="hljs-comment">## 6    NA 2012-10-01       25</span>
+</code></pre>
+<p>Now we have our data ready to work</p>
+<h2><a id="What_is_mean_total_number_of_steps_taken_per_day_80"></a>What is mean total number of steps taken per day?</h2>
+<blockquote>
+<p>For this part of the assignment, you can ignore the missing values in the dataset.</p>
+</blockquote>
+<ol>
+<li>Calculate the total number of steps taken per day.</li>
+<li>Make a histogram of the total number of steps taken each day.</li>
+<li>Calculate and report the mean and median of the total number of steps taken per day.</li>
+</ol>
+<p>We need to get and print a mean of the total number of steps taken each day.</p>
+<ol>
+<li>First we get the total number of steps per day using dplyr and group by date:</li>
+</ol>
+<pre><code class="language-r">steps &lt;- data %&gt;%
+filter(!is.na(steps)) %&gt;%
+group_by(date) %&gt;%
+summarize(steps = sum(steps)) %&gt;%
+print
+</code></pre>
+<p>It results in a dataset like this:</p>
+<pre><code><span class="hljs-preprocessor">## Source: local data frame [<span class="hljs-number">53</span> x <span class="hljs-number">2</span>]</span>
+<span class="hljs-preprocessor">## </span>
+<span class="hljs-preprocessor">##          date steps</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">1</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">02</span>   <span class="hljs-number">126</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">2</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">03</span> <span class="hljs-number">11352</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">3</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">04</span> <span class="hljs-number">12116</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">4</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">05</span> <span class="hljs-number">13294</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">5</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">06</span> <span class="hljs-number">15420</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">6</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">07</span> <span class="hljs-number">11015</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">7</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">09</span> <span class="hljs-number">12811</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">8</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">10</span>  <span class="hljs-number">9900</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">9</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">11</span> <span class="hljs-number">10304</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">10</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">12</span> <span class="hljs-number">17382</span></span>
+<span class="hljs-preprocessor">## ..        ...   ...</span>
+</code></pre>
+<ol start="2">
+<li>Then we create the histogram and print it.</li>
+</ol>
+<pre><code class="language-r">ggplot(steps, aes(x = steps)) +
+geom_histogram(fill = <span class="hljs-string">"red"</span>, binwidth = <span class="hljs-number">1000</span>) +
+labs(title = <span class="hljs-string">"Histogram of steps per day"</span>, x = <span class="hljs-string">"Steps taken"</span>, y = <span class="hljs-string">"Date"</span>)
+</code></pre>
+<p><img src="/histogram1.png" alt="Histogram1"></p>
+<ol start="3">
+<li>
+<p>Calculate the mean and median values (ignoring NA values) using the above dataset.</p>
+</li>
+<li>
+<p>Mean</p>
+<pre><code class="language-r">mean_steps &lt;- mean(steps$steps, na.rm = <span class="hljs-literal">TRUE</span>)
+
+mean_steps
+
+</code></pre>
+<pre><code><span class="hljs-preprocessor">## [<span class="hljs-number">1</span>] <span class="hljs-number">10766.19</span></span>
+</code></pre>
+</li>
+<li>
+<p>Median</p>
+<pre><code class="language-r">median_steps &lt;- median(steps$steps, na.rm = <span class="hljs-literal">TRUE</span>)
+
+median_steps
+</code></pre>
+</li>
+</ol>
+<pre><code>  ```
+  ## [1] 10765
+  ```
+</code></pre>
+<p>The steps mean is 10766 and the steps median is 10765.</p>
+<h2><a id="What_is_the_average_daily_activity_pattern_162"></a>What is the average daily activity pattern?</h2>
+<blockquote>
+<p>What is the average daily activity pattern?</p>
+</blockquote>
+<ol>
+<li>Make a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)</li>
+<li>Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?</li>
+</ol>
+<ol>
+<li>First we calculate the average number of steps taken in each 5-minute interval per day, we’ll group the dataset by interval, we’ll exclude the NA values.</li>
+</ol>
+<pre><code class="language-r">interval &lt;- data %&gt;%
+filter(!is.na(steps)) %&gt;%
+group_by(interval) %&gt;%
+summarize(steps = mean(steps))
+</code></pre>
+<ol start="2">
+<li>Then we create the plot for the intervals and avg steps taken.</li>
+</ol>
+<pre><code class="language-r"> ggplot(interval, aes(x=interval, y=steps)) +
+ geom_line(color = <span class="hljs-string">"red"</span>)
+</code></pre>
+<p><img src="/line1.png" alt="Line11"></p>
+<ol start="3">
+<li>Now we use which.max() to find the interval with the most steps taken</li>
+</ol>
+<pre><code class="language-r">interval[which.max(interval$steps),]
+</code></pre>
+<pre><code><span class="hljs-preprocessor">## Source: local data frame [<span class="hljs-number">1</span> x <span class="hljs-number">2</span>]</span>
+<span class="hljs-preprocessor">## </span>
+<span class="hljs-preprocessor">##   interval    steps</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">1</span>      <span class="hljs-number">835</span> <span class="hljs-number">206.1698</span></span>
+</code></pre>
+<p>We find that the interval 835 has the highest avg count of steps = 206.</p>
+<h2><a id="Imputing_missing_values_208"></a>Imputing missing values</h2>
+<blockquote>
+<p>Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.</p>
+</blockquote>
+<ol>
+<li>Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)</li>
+<li>Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.</li>
+<li>Create a new dataset that is equal to the original dataset but with the missing data filled in.</li>
+<li>Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?</li>
+</ol>
+<p>What we need to do is follow this next steps:</p>
+<ol>
+<li>We need to get a sum of all missing values.</li>
+</ol>
+<pre><code class="language-r">sum(is.na(data$steps))
+</code></pre>
+<pre><code><span class="hljs-preprocessor">## [<span class="hljs-number">1</span>] <span class="hljs-number">2304</span></span>
+</code></pre>
+<p>We have 2304 missing values.</p>
+<ol start="2">
+<li>We will replace missing values with the average number of steps in the same 5 min interval and 3. We will store it in a new dataset.</li>
+</ol>
+<pre><code class="language-r">data_full &lt;- data
+nas &lt;- is.na(data_full$steps)
+avg_interval &lt;- tapply(data_full$steps, data_full$interval, mean, na.rm=<span class="hljs-literal">TRUE</span>,   
+simplify=<span class="hljs-literal">TRUE</span>)
+data_full$steps[nas] &lt;- avg_interval[as.character(data_full$interval[nas])]
+</code></pre>
+<p>We need to check if all NA’s were replaced:</p>
+<pre><code class="language-r">sum(is.na(data_full$steps))
+</code></pre>
+<pre><code><span class="hljs-preprocessor">## [<span class="hljs-number">1</span>] <span class="hljs-number">0</span></span>
+</code></pre>
+<p>We can see the number of missing values is now 0</p>
+<ol start="4">
+<li>We now need to calculate the number of steps taken in each 5 min interval per day.</li>
+</ol>
+<pre><code class="language-r">steps_full &lt;- data_full %&gt;%
+filter(!is.na(steps)) %&gt;%
+group_by(date) %&gt;%
+summarize(steps = sum(steps)) %&gt;%
+print
+</code></pre>
+<p>A portion of the new dataset is as follows:</p>
+<pre><code><span class="hljs-preprocessor">## Source: local data frame [<span class="hljs-number">61</span> x <span class="hljs-number">2</span>]</span>
+<span class="hljs-preprocessor">## </span>
+<span class="hljs-preprocessor">##          date    steps</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">1</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span> <span class="hljs-number">10766.19</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">2</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">02</span>   <span class="hljs-number">126.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">3</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">03</span> <span class="hljs-number">11352.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">4</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">04</span> <span class="hljs-number">12116.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">5</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">05</span> <span class="hljs-number">13294.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">6</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">06</span> <span class="hljs-number">15420.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">7</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">07</span> <span class="hljs-number">11015.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">8</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">08</span> <span class="hljs-number">10766.19</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">9</span>  <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">09</span> <span class="hljs-number">12811.00</span></span>
+<span class="hljs-preprocessor">## <span class="hljs-number">10</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">10</span>  <span class="hljs-number">9900.00</span></span>
+<span class="hljs-preprocessor">## ..        ...      ...</span>
+</code></pre>
+<p>Now we create a histogram of the new dataset.</p>
+<pre><code class="language-r">ggplot(steps_full, aes(x = steps)) +
+geom_histogram(fill = <span class="hljs-string">"red"</span>, binwidth = <span class="hljs-number">1000</span>) +
+labs(title = <span class="hljs-string">"Histogram of steps per day (no missing values)"</span>, x = <span class="hljs-string">"Steps taken"</span>, y = <span class="hljs-string">"Date"</span>)
+</code></pre>
+<p><img src="/histogram2.png" alt="Histogram2"></p>
+<p>Finally we calculate the mean and median values of this new dataset.</p>
+<ol>
+<li>
+<p>Mean</p>
+<pre><code class="language-r">mean_steps_full &lt;- mean(steps_full$steps, na.rm = <span class="hljs-literal">TRUE</span>)
+mean_steps_full
+</code></pre>
+</li>
+</ol>
+<pre><code>  ```
+  ## [1] 10766.19
+  ```
+</code></pre>
+<ol start="2">
+<li>
+<p>Median</p>
+<pre><code class="language-r">median_steps_full &lt;- median(steps_full$steps, na.rm = <span class="hljs-literal">TRUE</span>)
+median_steps_full
+</code></pre>
+</li>
+</ol>
+<pre><code>  ```
+  ## [1] 10766.19
+  ```
+</code></pre>
+<p>We can observe that adding the missing values to the original data has caused both the mean and median values to be the same at 10766</p>
+<h2><a id="Are_there_differences_in_activity_patterns_between_weekdays_and_weekends_333"></a>Are there differences in activity patterns between weekdays and weekends?</h2>
+<blockquote>
+<p>For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.</p>
+</blockquote>
+<ol>
+<li>
+<p>Create a new factor variable in the dataset with two levels - “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.</p>
+</li>
+<li>
+<p>Make a panel plot containing a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:</p>
+</li>
+<li>
+<p>Use dplyr’s mutate to create a new column, “weektype”, and apply whether the day is weekend or weekday:.</p>
+</li>
+</ol>
+<pre><code class="language-r">data_full &lt;- mutate(data_full, weektype = ifelse(weekdays(data_full$date) == <span class="hljs-string">"Saturday"</span> | weekdays(data_full$date) == <span class="hljs-string">"Sunday"</span>, <span class="hljs-string">"weekend"</span>, <span class="hljs-string">"weekday"</span>))
+data_full$weektype &lt;- as.factor(data_full$weektype)
+head(data_full)
+</code></pre>
+<p>This is what the new dataset should look like:</p>
+<pre><code><span class="hljs-preprocessor">##       steps       date interval weektype</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">1</span> <span class="hljs-number">1.7169811</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>        <span class="hljs-number">0</span>  weekday</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">2</span> <span class="hljs-number">0.3396226</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>        <span class="hljs-number">5</span>  weekday</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">3</span> <span class="hljs-number">0.1320755</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">10</span>  weekday</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">4</span> <span class="hljs-number">0.1509434</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">15</span>  weekday</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">5</span> <span class="hljs-number">0.0754717</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">20</span>  weekday</span>
+<span class="hljs-preprocessor">## <span class="hljs-number">6</span> <span class="hljs-number">2.0943396</span> <span class="hljs-number">2012</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span>       <span class="hljs-number">25</span>  weekday</span>
+</code></pre>
+<ol start="2">
+<li>We need to calculate the average steps for each 5 min interval for weekdays and weekends and plot them</li>
+</ol>
+<pre><code class="language-r">interval_full &lt;- data_full %&gt;%
+group_by(interval, weektype) %&gt;%
+summarise(steps = mean(steps))
+s &lt;- ggplot(interval_full, aes(x=interval, y=steps, color = weektype)) +
+geom_line() +
+facet_wrap(~weektype, ncol = <span class="hljs-number">1</span>, nrow=<span class="hljs-number">2</span>)
+print(s)
+</code></pre>
+<p><img src="weektype.png" alt="Weektype"></p>
+<p>It seems that the observed subjects were more active in the day’s early 5 min periods on weekends compared to weekdays, but were overall more active during the course of the whole day on weekdays compared to weekends, this is probaly because of labor activities during weekdays in comparison to rest periods on weekends.</p>
+
+</body></html>
